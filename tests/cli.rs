@@ -1,5 +1,5 @@
-use assert_cmd::Command;
-use predicates::prelude::*;
+// use assert_cmd::Command;
+// use predicates::prelude::*;
 
 #[test]
 fn dies_no_args() {
