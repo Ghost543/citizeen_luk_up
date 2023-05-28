@@ -41,9 +41,7 @@ fn main() {
         println!("{:?}", dd.unwrap());
         println!(
             "{:?}",
-            res.rows().collect::<Vec<_>>()[1][0]
-                .get_string()
-                .unwrap()
+            res.rows().collect::<Vec<_>>()[1][0].get_string().unwrap()
         );
     }
 }
