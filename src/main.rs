@@ -1,7 +1,7 @@
 use std::convert::From;
 use std::error::Error;
 
-use calamine::{open_workbook, open_workbook_auto, DataType, Range, Reader, Xlsx, XlsxError};
+use calamine::{open_workbook, DataType, Range, Reader, Xlsx, XlsxError};
 use clap::Parser;
 
 #[derive(Parser)]
@@ -32,16 +32,16 @@ fn reading_file(s: &str) -> Result<Range<DataType>, XlsxError> {
 fn main() {
     let cli = Cli::parse();
     let nin = cli.nin;
-    println!("NIN: {:?}", nin);
-    println!("NIN: {:?}", cli.surname.as_deref());
+    println!("n_i_n: {:?}", nin);
+    println!("n_i_n: {:?}", cli.surname.as_deref());
 
     let res = reading_file("src/data/LAKE  VICTORIA SCHOOL.xlsx").unwrap();
-    if let Some(NIN) = nin {
-        let dd = res.rows().find(|r| r[0].get_string().unwrap() == NIN);
+    if let Some(n_i_n) = nin {
+        let dd = res.rows().find(|r| r[0].get_string().unwrap() == n_i_n);
         println!("{:?}", dd.unwrap());
         println!(
             "{:?}",
-            res.rows().into_iter().collect::<Vec<_>>()[1][0]
+            res.rows().collect::<Vec<_>>()[1][0]
                 .get_string()
                 .unwrap()
         );
