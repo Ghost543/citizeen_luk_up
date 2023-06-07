@@ -48,31 +48,24 @@ fn get_file() -> Vec<PathBuf> {
     files
 }
 
-fn merging_content_in_files(files: &Vec<PathBuf>) {
+fn merging_content_in_files(files: &Vec<PathBuf>) -> Vec<Vec<DataType>> {
     let mut merged_rows = Vec::new();
     for file in files {
-        // println!("\n ------------------------------------------------------------------------------------------------------------\n");
-        // println!("{:?}", file);
-        // println!("\n ------------------------------------------------------------------------------------------------------------\n");
         let range = reading_file(file.to_str().unwrap()).unwrap();
-        // println!("{:?}", range.rows().collect::<Vec<_>>());
-        // println!("\n ------------------------------------------------------------------------------------------------------------\n");
-        for row in range.rows().collect::<Vec<_>>() {
-            merged_rows.push(row);
-        }
+        let rows: Vec<Vec<DataType>> = range.rows().map(|row| row.to_vec()).collect();
+        merged_rows.extend(rows);
     }
-    println!("{:?}", merged_rows);
+    // println!("{:?}", merged_rows);
+    merged_rows
 }
 
-fn getting_person(search: &Option<String>) {
-    let res = reading_file("src/data/LAKE  VICTORIA SCHOOL.xlsx").unwrap();
+fn getting_person(search: &Option<String>) -> Option<Vec<DataType>> {
+    let res = merging_content_in_files(&get_file());
     if let Some(n_i_n) = search {
-        let dd = res.rows().find(|r| r[0].get_string().unwrap() == n_i_n);
-        println!("{:?}", dd.unwrap());
-        println!(
-            "{:?}",
-            res.rows().collect::<Vec<_>>()[1][0].get_string().unwrap()
-        );
+        res.into_iter()
+            .find(|row| row[0].get_string() == Some(n_i_n.as_str()))
+    } else {
+        None
     }
 }
 
@@ -80,7 +73,10 @@ fn main() {
     let cli = Cli::parse();
     let nin = cli.nin;
     println!("n_i_n: {:?}", nin);
-    println!("n_i_n: {:?}", cli.surname.as_deref());
+    println!("surname: {:?}", cli.surname.as_deref());
 
-    getting_person(&nin);
+    println!(
+        "{:?}",
+        getting_person(&nin).unwrap()[1].get_string().unwrap()
+    );
 }
