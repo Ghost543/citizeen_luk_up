@@ -5,6 +5,9 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[profile.release]
+debug=true
+
 [dependencies]
 clap = { version="4.2.7", features=["default", "derive"] }
 calamine = "0.19.1"
