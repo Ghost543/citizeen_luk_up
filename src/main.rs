@@ -4,7 +4,9 @@ pub mod fields;
 use std::convert::From;
 
 use crate::data::data_controller::{get_file, merging_content_in_files};
-use crate::fields::name::getting_results_name;
+use crate::fields::name::{
+    getting_results_given_name, getting_results_name, getting_results_surname,
+};
 use crate::fields::nin::{getting_person, nin_validator, Nin};
 use clap::Parser;
 
@@ -20,24 +22,6 @@ struct Cli {
     #[arg(long, short = 'g')]
     given_name: Option<String>,
 }
-
-// enum Command {
-//     Nin,
-//     Name,
-//     Surname,
-//     GivenName,
-// }
-
-// struct Argument<T, U> {
-//     search: T,
-//     data: U,
-// }
-//
-// impl<T, U> Argument<T, U> {
-//     fn new(search: T, data: U) -> Self {
-//         Self { search, data }
-//     }
-// }
 
 //using a nin
 
@@ -69,13 +53,11 @@ fn main() {
         println!("{:?}", results);
     }
     if let Some(surname) = surname {
-        let results = getting_results_name(&surname, data.clone());
+        let results = getting_results_surname(&surname, data.clone());
         println!("{:?}", results);
     }
     if let Some(given_name) = given_name {
-        let results = getting_results_name(&given_name, data);
+        let results = getting_results_given_name(&given_name, data);
         println!("{:?}", results);
     }
-
-    // get_file();
 }
